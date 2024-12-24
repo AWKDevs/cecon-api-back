@@ -19,7 +19,7 @@ model Car {
   model       String
   year        Int
   price       Float
-  mileage     Int
+  kilometer     Int
   image       String?
   description String?
   dealership  Dealership? @relation(fields: [dealershipId], references: [id])

@@ -6,8 +6,35 @@ export class CarsService {
   constructor(private prisma: PrismaService) {}
 
   async findAll() {
-    return this.prisma.car.findMany({
-      include: { dealership: true, features: true },
+    const cars = await this.prisma.car.findMany({
+      select: {
+        id: true,
+        make: true,
+        model: true,
+        year: true,
+        price: true,
+        kilometer: true,
+        image: true,
+        description: true,
+        dealership: {
+          select: {
+            id: true,
+            name: true,
+            location: true,
+          },
+        },
+        features: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
+
+    return cars.map((car) => ({
+      ...car,
+      dealershipId: car.dealership.id,
+    }));
   }
 }
